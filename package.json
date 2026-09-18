@@ -13,7 +13,7 @@
     "local-ai",
     "text-analysis"
   ],
-  "author": "Aryavrat Vyas",
+  "author": "Lalitaditya",
   "license": "MIT",
   "dependencies": {
     "@qvac/sdk": "0.19.1"
