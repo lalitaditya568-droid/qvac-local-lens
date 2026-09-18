@@ -249,6 +249,10 @@ const server = http.createServer((req, res) => {
       qvac: true,
       local: true,
       modelLoaded: Boolean(modelId),
+      app: "LocalLens",
+      version: "1.0.0",
+      model: "Qwen3 600M",
+      sdk: "@qvac/sdk 0.19.1",
     });
 
     return;
