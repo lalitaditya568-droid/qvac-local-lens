@@ -96,6 +96,12 @@ The application does not use OpenAI, Gemini, Claude, OpenRouter, or another clou
 
 AI inference is performed locally through QVAC.
 
+## Author
+
+Lalitaditya
+
+This project was built as an open-source demonstration of on-device AI inference using Tether's QVAC SDK.
+
 ## License
 
 MIT License.
