@@ -63,6 +63,20 @@ Then open:
 
 On first use, QVAC loads the Qwen3 0.6B Q4 model locally. The model is cached on the device for subsequent use.
 
+## Example
+
+Input:
+
+    The project meeting has moved to Thursday at 2 PM. Everyone should bring
+    their latest progress report and report any blockers before the meeting.
+
+LocalLens can turn this into:
+
+- Summary: The project meeting has moved to Thursday at 2 PM.
+- Key points: New meeting time and required progress reports.
+- Action items: Bring the latest report and report blockers.
+- Sentiment: Neutral
+
 ## How It Works
 
 1. The user enters text in the LocalLens interface.
