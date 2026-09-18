@@ -44,7 +44,7 @@ All AI inference runs locally through Tether's QVAC SDK using the Qwen3 0.6B Q4 
 
 Clone the repository:
 
-    git clone https://github.com/YOUR-USERNAME/qvac-local-lens.git
+    git clone https://github.com/lalitaditya568-droid/qvac-local-lens.git
     cd qvac-local-lens
 
 Install dependencies:
