@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LocalLens — Private AI Text Intelligence</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #1d3557 0, transparent 35%),
+        radial-gradient(circle at bottom right, #172554 0, transparent 35%),
+        #070b14;
+      color: #f8fafc;
+    }
+
+    .container {
+      width: min(1050px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 55px 0 45px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 38px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 13px;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      background: #111827;
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #4ade80;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      max-width: 650px;
+      margin: 20px auto 0;
+      color: #94a3b8;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .privacy {
+      margin-top: 14px;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .panel {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid #273449;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(18px);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 210px;
+      resize: vertical;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 18px;
+      background: #080d18;
+      color: #f8fafc;
+      outline: none;
+      font: inherit;
+      font-size: 15px;
+      line-height: 1.7;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
+    }
+
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .counter {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 22px;
+      background: #f8fafc;
+      color: #0f172a;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+      transform: none;
+    }
+
+    .status {
+      margin-top: 15px;
+      min-height: 20px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .results {
+      display: none;
+      margin-top: 24px;
+      gap: 16px;
+    }
+
+    .results.visible {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .result-card {
+      padding: 21px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #273449;
+    }
+
+    .result-card.summary {
+      grid-column: 1 / -1;
+    }
+
+    .result-title {
+      margin-bottom: 12px;
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .summary-text {
+      color: #e2e8f0;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #cbd5e1;
+      line-height: 1.8;
+    }
+
+    .empty {
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .sentiment {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 21px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #273449;
+    }
+
+    .sentiment-value {
+      font-weight: 800;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 28px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding-top: 35px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .results.visible {
+        grid-template-columns: 1fr;
+      }
+
+      .result-card.summary,
+      .sentiment {
+        grid-column: auto;
+      }
+
+      .controls {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header>
+      <div class="badge">
+        <span class="dot"></span>
+        ON-DEVICE AI
+      </div>
+
+      <h1>
+        Local<span class="gradient">Lens</span>
+      </h1>
+
+      <p class="subtitle">
+        Turn messy text into clear, useful information with private AI
+        running directly on your device.
+      </p>
+
+      <div class="privacy">
+        🔒 Your text stays local. No cloud AI API required.
+      </div>
+    </header>
+
+    <section class="panel">
+
+      <label for="input">
+        Text to analyze
+      </label>
+
+      <textarea
+        id="input"
+        maxlength="12000"
+        placeholder="Paste meeting notes, an email, an article, project requirements, or any other text here..."
+      ></textarea>
+
+      <div class="controls">
+        <span class="counter">
+          <span id="count">0</span> / 12,000 characters
+        </span>
+
+        <button id="analyze">
+          Analyze Locally →
+        </button>
+      </div>
+
+      <div class="status" id="status"></div>
+
+    </section>
+
+    <section class="results" id="results">
+
+      <article class="result-card summary">
+        <div class="result-title">Summary</div>
+        <div class="summary-text" id="summary"></div>
+      </article>
+
+      <article class="result-card">
+        <div class="result-title">Key Points</div>
+        <ul id="keyPoints"></ul>
+      </article>
+
+      <article class="result-card">
+        <div class="result-title">Action Items</div>
+        <ul id="actionItems"></ul>
+      </article>
+
+      <div class="sentiment">
+        <span class="result-title" style="margin: 0;">
+          Sentiment
+        </span>
+
+        <span class="sentiment-value" id="sentiment">
+          —
+        </span>
+      </div>
+
+    </section>
+
+    <footer>
+      LocalLens · Powered by QVAC · Qwen3 0.6B · Private by design
+    </footer>
+
+  </main>
+
+  <script>
+    const input = document.getElementById("input");
+    const count = document.getElementById("count");
+    const analyze = document.getElementById("analyze");
+    const status = document.getElementById("status");
+    const results = document.getElementById("results");
+
+    const summary = document.getElementById("summary");
+    const keyPoints = document.getElementById("keyPoints");
+    const actionItems = document.getElementById("actionItems");
+    const sentiment = document.getElementById("sentiment");
+
+    input.addEventListener("input", () => {
+      count.textContent = input.value.length;
+    });
+
+    function renderList(element, items, emptyText) {
+      element.innerHTML = "";
+
+      if (!items || items.length === 0) {
+        const li = document.createElement("li");
+        li.className = "empty";
+        li.textContent = emptyText;
+        element.appendChild(li);
+        return;
+      }
+
+      for (const item of items) {
+        const li = document.createElement("li");
+        li.textContent = item;
+        element.appendChild(li);
+      }
+    }
+
+    analyze.addEventListener("click", async () => {
+      const text = input.value.trim();
+
+      if (!text) {
+        status.textContent = "Please enter some text first.";
+        return;
+      }
+
+      analyze.disabled = true;
+      analyze.textContent = "Analyzing locally...";
+      status.textContent = "QVAC is processing your text on-device.";
+      results.classList.remove("visible");
+
+      try {
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Analysis failed.");
+        }
+
+        summary.textContent = data.summary;
+
+        renderList(
+          keyPoints,
+          data.keyPoints,
+          "No key points identified."
+        );
+
+        renderList(
+          actionItems,
+          data.actionItems,
+          "No specific action items identified."
+        );
+
+        sentiment.textContent = data.sentiment;
+
+        results.classList.add("visible");
+
+        status.textContent =
+          "✓ Analysis complete — processed locally with QVAC.";
+      } catch (error) {
+        status.textContent = `Error: ${error.message}`;
+      } finally {
+        analyze.disabled = false;
+        analyze.textContent = "Analyze Locally →";
+      }
+    });
+  </script>
+</body>
+</html>

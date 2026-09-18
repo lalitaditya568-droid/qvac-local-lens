@@ -1,0 +1,21 @@
+{
+  "name": "qvac-local-lens",
+  "version": "1.0.0",
+  "description": "A private on-device AI text intelligence tool powered by QVAC.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "qvac",
+    "on-device-ai",
+    "local-ai",
+    "text-analysis"
+  ],
+  "author": "Aryavrat Vyas",
+  "license": "MIT",
+  "dependencies": {
+    "@qvac/sdk": "0.19.1"
+  }
+}
